@@ -51,6 +51,8 @@ public abstract class BaseSliderView {
 
     private Object mPicassoTag;
 
+    private Picasso.Priority mPicassoPriority;
+
     /**
      * Scale type of the image.
      */
@@ -229,6 +231,10 @@ public abstract class BaseSliderView {
             rq.tag(mPicassoTag);
         }
 
+        if(mPicassoPriority != null) {
+            rq.tag(mPicassoPriority);
+        }
+
         if(getEmpty() != 0){
             rq.placeholder(getEmpty());
         }
@@ -335,6 +341,11 @@ public abstract class BaseSliderView {
 
     public BaseSliderView setPicassoTag(Object aPicassoTag) {
         mPicassoTag = aPicassoTag;
+        return this;
+    }
+
+    public BaseSliderView setPicassoPriority(Picasso.Priority aPicassoPriority) {
+        mPicassoPriority = aPicassoPriority;
         return this;
     }
 }
