@@ -232,7 +232,7 @@ public abstract class BaseSliderView {
         }
 
         if(mPicassoPriority != null) {
-            rq.tag(mPicassoPriority);
+            rq.priority(mPicassoPriority);
         }
 
         if(getEmpty() != 0){
