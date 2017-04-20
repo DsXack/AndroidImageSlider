@@ -23,7 +23,7 @@ public class SliderAdapter extends PagerAdapter implements BaseSliderView.ImageL
     }
 
     public <T extends BaseSliderView> void addSlider(T slider){
-        slider.setOnImageLoadListener(this);
+        slider.addOnImageLoadListener(this);
         mImageContents.add(slider);
         notifyDataSetChanged();
     }

@@ -11,6 +11,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * When you want to make your own slider view, you must extends from this class.
@@ -43,7 +44,7 @@ public abstract class BaseSliderView {
 
     private boolean mErrorDisappear;
 
-    private ImageLoadListener mLoadListener;
+    private ArrayList<ImageLoadListener> mLoadListeners = new ArrayList<>();
 
     private String mDescription;
 
@@ -207,8 +208,10 @@ public abstract class BaseSliderView {
         if (targetImageView == null)
             return;
 
-        if (mLoadListener != null) {
-            mLoadListener.onStart(me);
+        if (mLoadListeners.size() > 0) {
+            for (ImageLoadListener l : mLoadListeners) {
+                l.onStart(me);
+            }
         }
 
         Picasso p = (mPicasso != null) ? mPicasso : Picasso.with(mContext);
@@ -258,6 +261,11 @@ public abstract class BaseSliderView {
         rq.into(targetImageView,new Callback() {
             @Override
             public void onSuccess() {
+                if (mLoadListeners.size() > 0) {
+                    for (ImageLoadListener l : mLoadListeners) {
+                        l.onEnd(true, me);
+                    }
+                }
                 if(v.findViewById(R.id.loading_bar) != null){
                     v.findViewById(R.id.loading_bar).setVisibility(View.INVISIBLE);
                 }
@@ -265,8 +273,10 @@ public abstract class BaseSliderView {
 
             @Override
             public void onError() {
-                if(mLoadListener != null){
-                    mLoadListener.onEnd(false,me);
+                if (mLoadListeners.size() > 0) {
+                    for (ImageLoadListener l : mLoadListeners) {
+                        l.onEnd(false, me);
+                    }
                 }
                 if(v.findViewById(R.id.loading_bar) != null){
                     v.findViewById(R.id.loading_bar).setVisibility(View.INVISIBLE);
@@ -297,8 +307,8 @@ public abstract class BaseSliderView {
      * set a listener to get a message , if load error.
      * @param l
      */
-    public void setOnImageLoadListener(ImageLoadListener l){
-        mLoadListener = l;
+    public void addOnImageLoadListener(ImageLoadListener l){
+        mLoadListeners.add(l);
     }
 
     public interface OnSliderClickListener {
