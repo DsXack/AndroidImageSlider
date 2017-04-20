@@ -49,6 +49,8 @@ public abstract class BaseSliderView {
 
     private Picasso mPicasso;
 
+    private Object mPicassoTag;
+
     /**
      * Scale type of the image.
      */
@@ -223,6 +225,10 @@ public abstract class BaseSliderView {
             return;
         }
 
+        if(mPicassoTag != null) {
+            rq.tag(mPicassoTag);
+        }
+
         if(getEmpty() != 0){
             rq.placeholder(getEmpty());
         }
@@ -322,7 +328,13 @@ public abstract class BaseSliderView {
      * @param picasso The Picasso instance to use, may be null to let the system use the default
      *                instance
      */
-    public void setPicasso(Picasso picasso) {
+    public BaseSliderView setPicasso(Picasso picasso) {
         mPicasso = picasso;
+        return this;
+    }
+
+    public BaseSliderView setPicassoTag(Object aPicassoTag) {
+        mPicassoTag = aPicassoTag;
+        return this;
     }
 }
